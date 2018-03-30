@@ -170,7 +170,7 @@
     let LotteryNOPath = "LotteryNO"
     let NamePath = "Name"
     let Timestamp_InputPath = "Timestamp_Input"
-    let WinningFlag = "Winning"
+    let WinningPath = "Winning"
 
     function send() {
         if (Txt_Name.value == "") {
@@ -195,11 +195,11 @@
             autoID = fdatabase.ref().child(LotteryRootPath).push().key
             var updates = {}
             updates[LotteryRootPath + '/' + autoID] = {
-                BlessingPath: Txt_Blessing.value,
-                LotteryNOPath: lotteryNo.toString(),
-                NamePath: Txt_Name.value,
-                Timestamp_InputPath: Math.floor(Date.now() / 1000).toString(),
-                WinningFlag: ""
+                Blessing: Txt_Blessing.value,
+                LotteryNO: lotteryNo.toString(),
+                Name: Txt_Name.value,
+                Timestamp_Input: Math.floor(Date.now() / 1000).toString(),
+                Winning: ""
             }
             updates[LotteryNOCalPath] = lotteryNo + 1
             fdatabase.ref().update(updates)
