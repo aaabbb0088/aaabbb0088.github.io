@@ -26,18 +26,26 @@
         <header id="header">
             <h1>Title</h1>
             <p>some words<a href="URL"></a></p>
-            <table border="1" width="100%" id="table1">
+            <table border="1" width="100%" id="table">
                 <tr>
-                    <td>姓名</td>
+                    <td>
+                        <label id="LB_Name">姓名</label>
+                    </td>
                 </tr>
                 <tr>
-                    <td><input id="lb_name" type="text" name="input" align="center"/></td>
+                    <td>
+                        <input id="Txt_Name" type="text" name="input" align="center" />
+                    </td>
                 </tr>
                 <tr>
-                    <td><br></td>
+                    <td>
+                        <br>
+                    </td>
                 </tr>
                 <tr>
-                    <td>給我們的祝福</td>
+                    <td>
+                        <label id="LB_Blessing">給我們的祝福</label>
+                    </td>
                 </tr>
                 <tr>
                     <td>
@@ -45,11 +53,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <td><br></td>
+                    <td>
+                        <br>
+                    </td>
                 </tr>
                 <tr>
                     <td>
-                        <button type="button" style="width:100%;height:30px;">送出</button>
+                        <button id="button" value="0" type="button" style="width:100%;height:30px;" onclick="send()">送出</button>
                     </td>
                 </tr>
             </table>
@@ -126,10 +136,133 @@
         </footer>
     </div>
     <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyAsOPVm_WFDlbX4Uh47X_0rQ_RCFQK5Zj4",
+        authDomain: "fir-ftitest.firebaseapp.com",
+        databaseURL: "https://fir-ftitest.firebaseio.com",
+        projectId: "firebase-ftitest",
+        storageBucket: "firebase-ftitest.appspot.com",
+        messagingSenderId: "579878934314"
+    };
+    firebase.initializeApp(config);
+    </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/skel.min.js"></script>
     <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
     <script src="assets/js/main.js"></script>
+    <script>
+    var table = document.getElementById("table")
+    var LB_Name = document.getElementById("LB_Name")
+    var Txt_Name = document.getElementById("Txt_Name")
+    var LB_Blessing = document.getElementById("LB_Blessing")
+    var Txt_Blessing = document.getElementById("Txt_Blessing")
+    var button = document.getElementById("button")
+
+    //firebase
+    let fdatabase = firebase.database()
+    let LotteryNOCalPath = "Lottery/LotteryNOCal"
+    let LotteryRootPath = "Lottery/item"
+    var autoID = ""
+    let BlessingPath = "Blessing"
+    let LotteryNOPath = "LotteryNO"
+    let NamePath = "Name"
+    let Timestamp_InputPath = "Timestamp_Input"
+    let WinningPath = "Winning"
+
+    function send() {
+        if (Txt_Name.value == "") {
+            Txt_Name.focus()
+            return
+        }
+        if (Txt_Blessing.value == "") {
+            Txt_Blessing.focus()
+            return
+        }
+
+        let ref = fdatabase.ref(LotteryNOCalPath)
+        ref.once('value', function(snapshot) {
+            var r = snapshot.val()
+            if (r == null) {
+            	r = "111"
+            } else {
+            	r = r.toString()
+            }
+            var lotteryNo = new Number(r)
+
+            autoID = fdatabase.ref().child(LotteryRootPath).push().key
+            var updates = {}
+            updates[LotteryRootPath + '/' + autoID] = {
+                BlessingPath: Txt_Blessing.value,
+                LotteryNOPath: lotteryNo.toString(),
+                NamePath: Txt_Name.value,
+                Timestamp_InputPath: Math.floor(Date.now() / 1000).toString(),
+                WinningPath: ""
+            }
+            updates[LotteryNOCalPath] = lotteryNo + 1
+            fdatabase.ref().update(updates)
+
+            LB_Name.innerHTML = "感謝你/妳的祝福"
+            LB_Blessing.innerHTML = "別忘了，有抽獎活動喔！\n你/妳的抽獎號碼是：\n" + lotteryNo
+            Txt_Blessing.value = ""
+            Txt_Name.value = ""
+            Txt_Name.style = "display:none"
+            Txt_Blessing.style = "display:none"
+            button.innerHTML = "已送出"
+            button.disabled = "disabled"
+        });
+
+
+        // if (button.value == "0") {
+        //     button.value = "1"
+
+        //     if (Txt_Name.value == "") {
+        //         Txt_Name.focus()
+        //         return
+        //     }
+        //     if (Txt_Blessing.value == "") {
+        //         Txt_Blessing.focus()
+        //         return
+        //     }
+
+        //     let ref = fdatabase.ref(LotteryNOCalPath)
+        //     ref.once('value', function(snapshot) {
+        //         let r = snapshot.val().toString()
+        //         var lotteryNo = new Number(r)
+
+        //         autoID = fdatabase.ref().child(LotteryRootPath).push().key
+        //         var updates = {}
+        //         updates[LotteryRootPath + '/' + autoID] = {
+        //             BlessingPath: Txt_Blessing.value,
+        //             LotteryNOPath: lotteryNo.toString(),
+        //             NamePath: Txt_Name.value,
+        //             Timestamp_InputPath: Math.floor(Date.now() / 1000).toString(),
+        //             WinningPath: ""
+        //         }
+        //         updates[LotteryNOCalPath] = lotteryNo + 1
+        //         fdatabase.ref().update(updates)
+
+        //         LB_Name.innerHTML = "感謝你/妳的祝福"
+        //         LB_Blessing.innerHTML = "別忘了，有抽獎活動喔！\n你的抽獎號碼是：" + lotteryNo
+        //         Txt_Name.style = "display:none"
+        //         Txt_Blessing.style = "display:none"
+        //         button.innerHTML = "已送出"
+        //         button.disabled = "disabled"
+        //     });
+        // } else {
+        //     button.value = "0"
+        //     LB_Name.innerHTML = "姓名"
+        //     LB_Blessing.innerHTML = "給我們的祝福"
+        //     Txt_Blessing.value = ""
+        //     Txt_Name.value = ""
+        //     Txt_Name.style = "display:inline-block"
+        //     Txt_Blessing.style = "display:inline-block"
+        //     button.innerHTML = "送出"
+        // }
+    }
+    </script>
 </body>
 
 </html>
