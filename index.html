@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Test</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+
+
+<body>
+    <label id="myLabel_on" >[  ]</label>
+    <h1 id="myHeader" onclick="onRef()">關閉監聽aaa</h1>
+
+    <p>--------------------------------------</p>
+
+    <label id="myLabel_allCount" >[  ]</label>
+    <h1 id="myHeadeall" onclick="onCountRef()">關閉監聽allCount</h1>
+
+    <p>--------------------------------------</p>
+
+    <label id="myLabel_read" >[  ]</label>
+    <h1 id="myHeader2" onclick="readRef()" >讀取aaa</h1>
+
+    <p>--------------------------------------</p>
+
+    input:<br>
+    <input id="myLabel_write" type="text" name="input" />
+    <input id="myHeader3" type="submit" value="寫入aaa" onclick="writeRef()">
+
+    <p>--------------------------------------</p>
+
+    input:<br>
+    key:<input id="myLabel_add_key" type="text" name="input" /><br>
+    value:<input id="myLabel_add_value" type="text" name="input" /><br>
+    <input id="myHeader4" type="submit" value="新增autokey" onclick="addRef()">
+
+    <p>--------------------------------------</p>
+
+    <textarea id="text_all" style="width:300px;height:100px;"readonly="readonly">
+
+    </textarea><br>
+    <input id="myHeader5" type="submit" value="取得 all test" onclick="getAllRef()">
+
+    <p>--------------------------------------</p>
+
+
+    <textarea id="text_Random" style="width:300px;height:100px;"readonly="readonly">
+
+    </textarea><br>
+    <input id="myHeader6" type="submit" value="亂數抽獎" onclick="getRandomA()">
+
+</body>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAsOPVm_WFDlbX4Uh47X_0rQ_RCFQK5Zj4",
+    authDomain: "fir-ftitest.firebaseapp.com",
+    databaseURL: "https://fir-ftitest.firebaseio.com",
+    projectId: "firebase-ftitest",
+    storageBucket: "firebase-ftitest.appspot.com",
+    messagingSenderId: "579878934314"
+  };
+  firebase.initializeApp(config);
+  
+  // Get a reference to the database service
+  let firebaseDBPath = '/test'
+  var database = firebase.database();
+  var starCountRef = firebase.database().ref(firebaseDBPath + '/aaa')
+  var starCountRefAll = firebase.database().ref(firebaseDBPath)
+  </script>
+
+<script type="text/javascript">
+  function onRef()
+  {
+    var b = document.getElementById("myHeader")
+    if (b.innerHTML=="關閉監聽aaa") {
+      b.innerHTML="開啟監聽aaa"
+      starCountRef.on('value', function(snapshot) {
+        document.getElementById("myLabel_on").innerHTML = snapshot.val()
+      });
+    } else {
+      b.innerHTML="關閉監聽aaa"
+      starCountRef.off()
+    }
+  // var x=document.getElementById("myHeader")
+  // x.innerHTML = "111"
+  // document.getElementById("myLabel").innerHTML = "12345"
+  // alert(x.innerHTML)
+  }
+
+
+  function onCountRef()
+  {
+    var b = document.getElementById("myHeadeall")
+    if (b.innerHTML=="關閉監聽allCount") {
+      b.innerHTML="開啟監聽allCount"
+      starCountRefAll.on('value', function(snapshot) {
+        document.getElementById("myLabel_allCount").innerHTML = Object.keys(snapshot.val()).length
+      });
+    } else {
+      b.innerHTML="關閉監聽allCount"
+      starCountRefAll.off()
+    }
+  // var x=document.getElementById("myHeader")
+  // x.innerHTML = "111"
+  // document.getElementById("myLabel").innerHTML = "12345"
+  // alert(x.innerHTML)
+  }
+
+
+  function readRef() {
+    starCountRef.once('value', function(snapshot) {
+      document.getElementById("myLabel_read").innerHTML = snapshot.val()
+    });
+  }
+
+  function writeRef() {
+    var v = document.getElementById("myLabel_write").value;
+    var updates = {};
+    updates[firebaseDBPath + '/' + 'aaa'] = v;
+    firebase.database().ref().update(updates);
+  }
+
+  function addRef() {
+    var key = document.getElementById("myLabel_add_key").value;
+    var value = document.getElementById("myLabel_add_value").value;
+    var updates = {};
+    updates[firebaseDBPath + '/' + key] = value;
+    firebase.database().ref().update(updates);
+  }
+
+  function getAllRef() {
+    var starCountRef = firebase.database().ref(firebaseDBPath)
+    starCountRef.once('value', function(snapshot) {
+      var r = snapshot.val();
+      var count = Object.keys(r).length;
+      // var jsonObj = JSON.parse(snapshot.val());
+      var string = "";
+      for (var i in r) {
+        string = string + i + ' : ' + r[i] + '\n';
+      }
+
+      var rKeys = Object.keys(r)
+      string = string + '\n' + rKeys.toString()
+
+      document.getElementById("text_all").innerHTML = string
+    });
+  }
+
+  function getRandomA() {
+    var starCountRef = firebase.database().ref(firebaseDBPath)
+    starCountRef.once('value', function(snapshot) {
+      var r = snapshot.val();
+      var rKeys = Object.keys(r);
+
+      var count = rKeys.length;
+      var randomCount = Math.floor(count/3)
+      var randomAry = getRandomArray(0, count - 1, randomCount)
+      var string = '中獎者：\n'
+      for (var i = 0; i < randomAry.length; i++) {
+        let key = rKeys[randomAry[i]]
+        let val = r[key]
+        string = string + '(' + i + ')' + key + ' : ' + val + '\n'
+      }
+      document.getElementById("text_Random").innerHTML = string
+    });
+  }
+
+  function getRandomArray(minNum, maxNum, n) {  //隨機產生不重覆的n個數字
+  var rdmArray = [n];   //儲存產生的陣列
+ 
+  for(var i=0; i<n; i++) {
+    var rdm = 0;    //暫存的亂數
+ 
+    do {
+      var exist = false;      //此亂數是否已存在
+      rdm = getRandom(minNum, maxNum);  //取得亂數
+ 
+      //檢查亂數是否存在於陣列中，若存在則繼續回圈
+      if(rdmArray.indexOf(rdm) != -1) exist = true;
+ 
+    } while (exist);  //產生沒出現過的亂數時離開迴圈
+ 
+    rdmArray[i] = rdm;
+  }
+  return rdmArray;
+}
+
+function getRandom(minNum, maxNum) {  //取得 minNum(最小值) ~ maxNum(最大值) 之間的亂數
+  return Math.floor( Math.random() * (maxNum - minNum + 1) ) + minNum;
+}
+
+</script>
+
+</html>
