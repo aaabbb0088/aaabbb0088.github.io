@@ -46,6 +46,7 @@ function btn_onloadAction() {
             LB_Blessing.style = "display:none"
             Txt_Blessing.style = "display:none"
             BTN_send.style = "display:none"
+            fdatabase.goOffline()
             fireApp.delete()
         }
     });
@@ -231,6 +232,7 @@ window.onload = btn_onloadAction;
                     Txt_Blessing.style = "display:none"
                     BTN_send.innerHTML = "已送出"
                     BTN_send.disabled = true
+                    fdatabase.goOffline()
                     fireApp.delete()
                 });
             } else {
@@ -241,6 +243,7 @@ window.onload = btn_onloadAction;
                 LB_Blessing.style = "display:none"
                 Txt_Blessing.style = "display:none"
                 BTN_send.style = "display:none"
+                fdatabase.goOffline()
                 fireApp.delete()
             }
         });
