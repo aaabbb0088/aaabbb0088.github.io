@@ -646,13 +646,25 @@ var main = (function($) { var _ = {
 	 */
 	next: function() {
 
-		// Calculate new index.
+		// Calculate new index. 原左右切換
 			var i, c = _.current, l = _.slides.length;
 
 			if (c >= l - 1)
 				i = 0;
 			else
 				i = c + 1;
+
+			//垂直切換循環
+			// var i, c = _.current, l = _.slides.length, tpr = _.settings.thumbnailsPerRow;
+
+			// if (c >= l - tpr) {
+			// 	if (c % tpr != tpr - 1)
+			// 		i = c - l + tpr + 1;
+			// 	else
+			// 		i = 0
+			// }
+			// else
+			// 	i = c + tpr;
 
 		// Switch.
 			_.switchTo(i);
@@ -664,13 +676,24 @@ var main = (function($) { var _ = {
 	 */
 	previous: function() {
 
-		// Calculate new index.
+		// Calculate new index. 原左右切換
 			var i, c = _.current, l = _.slides.length;
 
 			if (c <= 0)
 				i = l - 1;
 			else
 				i = c - 1;
+
+			//垂直切換循環
+			// var i, c = _.current, l = _.slides.length, tpr = _.settings.thumbnailsPerRow;
+
+			// if (c <= (tpr - 1))
+			// 	if (c % tpr == 0)
+			// 		i = l - 1
+			// 	else
+			// 		i = l - (tpr - 1 - c) - 2;
+			// else
+			// 	i = c - tpr;
 
 		// Switch.
 			_.switchTo(i);

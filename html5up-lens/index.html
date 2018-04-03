@@ -7,7 +7,7 @@
 <html>
 
 <head>
-    <title>閔琮 與 維妤</title>
+    <title>閔琮 &hearts; 維妤</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -18,38 +18,60 @@
         <link rel="stylesheet" href="assets/css/noscript.css" />
     </noscript>
 </head>
+<script>
+//onload
+function btn_onloadAction() {
+    let ref = fdatabase.ref(LottreyInputStatusPath)
+    ref.once('value', function(snapshot) {
+        var r = snapshot.val()
+        if (r == null) {
+            r = "Y"
+            fdatabase.ref(LottreyInputStatusPath).set("Y")
+        } else {
+            r = r.toString()
+        }
+        if (r == "Y") {
+            BTN_send.innerHTML = "送出"
+            BTN_send.disabled = false
+            LB_Name.innerHTML = "姓名"
+            Txt_Name.style = "display:inline-block"
+            LB_Blessing.style = "display:inline-block"
+            Txt_Blessing.style = "width:100%;height:100px;"
+            BTN_send.style = "width:100%;height:30px;"
+        } else {
+            BTN_send.innerHTML = "已截止"
+            BTN_send.disabled = true
+            LB_Name.innerHTML = "傳送祝福活動已截止"
+            Txt_Name.style = "display:none"
+            LB_Blessing.style = "display:none"
+            Txt_Blessing.style = "display:none"
+            BTN_send.style = "display:none"
+            fireApp.delete()
+        }
+    });
+}
+window.onload = btn_onloadAction;
+</script>
 
 <body class="is-loading-0 is-loading-1 is-loading-2">
     <!-- Main -->
     <div id="main">
         <!-- Header -->
         <header id="header">
-            <h1>Title</h1>
-            <p>some words<a href="URL"></a></p>
+            <h1>傳送祝福</h1>
+            <p>感謝大家蒞臨我們的婚宴。
+                <br> 現在，歡迎上傳對 閔琮&hearts;維妤 的祝福。
+                <br> 我們將在午宴期間抽出多項禮品，敬請期待。
+                <a href="URL"></a></p>
             <table border="1" width="100%" id="table">
                 <tr>
                     <td>
-                        <label id="LB_Name">姓名</label>
+                        <label id="LB_Name">資料驗證中...</label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input id="Txt_Name" type="text" name="input" align="center" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <br>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label id="LB_Blessing">給我們的祝福</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <textarea id="Txt_Blessing" style="width:100%;height:100px;"></textarea>
+                        <input id="Txt_Name" type="text" name="input" align="center" style="display:none" />
                     </td>
                 </tr>
                 <tr>
@@ -59,7 +81,22 @@
                 </tr>
                 <tr>
                     <td>
-                        <button id="button" value="0" type="button" style="width:100%;height:30px;" onclick="send()">送出</button>
+                        <label id="LB_Blessing" style="display:none">給我們的祝福</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <textarea id="Txt_Blessing" style="display:none"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button id="BTN_send" value="0" type="button" style="display:none" onclick="send()" disabled="true">送出</button>
                     </td>
                 </tr>
             </table>
@@ -68,69 +105,39 @@
         <section id="thumbnails">
             <article>
                 <a class="thumbnail" href="images/fulls/01.jpg" data-position="left center"><img src="images/thumbs/01.jpg" alt="" /></a>
-                <h2>Diam tempus accumsan</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <h2></h2>
+                <p></p>
             </article>
             <article>
                 <a class="thumbnail" href="images/fulls/02.jpg"><img src="images/thumbs/02.jpg" alt="" /></a>
-                <h2>Vivamus convallis libero</h2>
-                <p>Sed velit lacus, laoreet at venenatis convallis in lorem tincidunt.</p>
+                <h2></h2>
+                <p></p>
             </article>
             <article>
                 <a class="thumbnail" href="images/fulls/03.jpg" data-position="top center"><img src="images/thumbs/03.jpg" alt="" /></a>
-                <h2>Nec accumsan enim felis</h2>
-                <p>Maecenas eleifend tellus ut turpis eleifend, vitae pretium faucibus.</p>
+                <h2></h2>
+                <p></p>
             </article>
             <article>
                 <a class="thumbnail" href="images/fulls/04.jpg"><img src="images/thumbs/04.jpg" alt="" /></a>
-                <h2>Donec maximus nisi eget</h2>
-                <p>Tristique in nulla vel congue. Sed sociis natoque parturient nascetur.</p>
+                <h2></h2>
+                <p></p>
             </article>
             <article>
                 <a class="thumbnail" href="images/fulls/05.jpg" data-position="top center"><img src="images/thumbs/05.jpg" alt="" /></a>
-                <h2>Nullam vitae nunc vulputate</h2>
-                <p>In pellentesque cursus velit id posuere. Donec vehicula nulla.</p>
+                <h2></h2>
+                <p></p>
             </article>
             <article>
                 <a class="thumbnail" href="images/fulls/06.jpg"><img src="images/thumbs/06.jpg" alt="" /></a>
-                <h2>Phasellus magna faucibus</h2>
-                <p>Nulla dignissim libero maximus tellus varius dictum ut posuere magna.</p>
-            </article>
-            <article>
-                <a class="thumbnail" href="images/fulls/07.jpg"><img src="images/thumbs/07.jpg" alt="" /></a>
-                <h2>Proin quis mauris</h2>
-                <p>Etiam ultricies, lorem quis efficitur porttitor, facilisis ante orci urna.</p>
-            </article>
-            <article>
-                <a class="thumbnail" href="images/fulls/08.jpg"><img src="images/thumbs/08.jpg" alt="" /></a>
-                <h2>Gravida quis varius enim</h2>
-                <p>Nunc egestas congue lorem. Nullam dictum placerat ex sapien tortor mattis.</p>
-            </article>
-            <article>
-                <a class="thumbnail" href="images/fulls/09.jpg"><img src="images/thumbs/09.jpg" alt="" /></a>
-                <h2>Morbi eget vitae adipiscing</h2>
-                <p>In quis vulputate dui. Maecenas metus elit, dictum praesent lacinia lacus.</p>
-            </article>
-            <article>
-                <a class="thumbnail" href="images/fulls/10.jpg"><img src="images/thumbs/10.jpg" alt="" /></a>
-                <h2>Habitant tristique senectus</h2>
-                <p>Vestibulum ante ipsum primis in faucibus orci luctus ac tincidunt dolor.</p>
-            </article>
-            <article>
-                <a class="thumbnail" href="images/fulls/11.jpg"><img src="images/thumbs/11.jpg" alt="" /></a>
-                <h2>Pharetra ex non faucibus</h2>
-                <p>Ut sed magna euismod leo laoreet congue. Fusce congue enim ultricies.</p>
-            </article>
-            <article>
-                <a class="thumbnail" href="images/fulls/12.jpg"><img src="images/thumbs/12.jpg" alt="" /></a>
-                <h2>Mattis lorem sodales</h2>
-                <p>Feugiat auctor leo massa, nec vestibulum nisl erat faucibus, rutrum nulla.</p>
+                <h2></h2>
+                <p></p>
             </article>
         </section>
         <!-- Footer -->
         <footer id="footer">
             <ul class="copyright">
-                <li>閔琮 與 維妤</li>
+                <li>閔琮 &hearts; 維妤</li>
                 <li>感謝你/妳的祝福</li>
             </ul>
         </footer>
@@ -147,24 +154,26 @@
         storageBucket: "firebase-ftitest.appspot.com",
         messagingSenderId: "579878934314"
     };
-    firebase.initializeApp(config);
+    let fireApp = firebase.initializeApp(config);
     </script>
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/skel.min.js"></script>
     <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
     <script src="assets/js/main.js"></script>
     <script>
-    var table = document.getElementById("table")
-    var LB_Name = document.getElementById("LB_Name")
-    var Txt_Name = document.getElementById("Txt_Name")
-    var LB_Blessing = document.getElementById("LB_Blessing")
-    var Txt_Blessing = document.getElementById("Txt_Blessing")
-    var button = document.getElementById("button")
+    let table = document.getElementById("table")
+    let LB_Name = document.getElementById("LB_Name")
+    let Txt_Name = document.getElementById("Txt_Name")
+    let LB_Blessing = document.getElementById("LB_Blessing")
+    let Txt_Blessing = document.getElementById("Txt_Blessing")
+    let BTN_send = document.getElementById("BTN_send")
 
     //firebase
-    let fdatabase = firebase.database()
-    let LotteryNOCalPath = "Lottery/LotteryNOCal"
-    let LotteryRootPath = "Lottery/item"
+    let fdatabase = fireApp.database()
+    let LotteryPath = "Lottery"
+    let LotteryNOCalPath = "Lottery/NOCal"
+    let LotteryItemPath = "Lottery/item"
+    let LottreyInputStatusPath = "Lottery/InputStatus"
     var autoID = ""
     let BlessingPath = "Blessing"
     let LotteryNOPath = "LotteryNO"
@@ -182,85 +191,59 @@
             return
         }
 
-        let ref = fdatabase.ref(LotteryNOCalPath)
+        let ref = fdatabase.ref(LottreyInputStatusPath)
         ref.once('value', function(snapshot) {
             var r = snapshot.val()
             if (r == null) {
-            	r = "111"
+                r = "Y"
+                fdatabase.ref(LottreyInputStatusPath).set("Y")
             } else {
-            	r = r.toString()
+                r = r.toString()
             }
-            var lotteryNo = new Number(r)
+            if (r == "Y") {
+                let ref = fdatabase.ref(LotteryNOCalPath)
+                ref.once('value', function(snapshot) {
+                    var r = snapshot.val()
+                    if (r == null) {
+                        r = "111"
+                    } else {
+                        r = r.toString()
+                    }
+                    var lotteryNo = new Number(r)
 
-            autoID = fdatabase.ref().child(LotteryRootPath).push().key
-            var updates = {}
-            updates[LotteryRootPath + '/' + autoID] = {
-                Blessing: Txt_Blessing.value,
-                LotteryNO: lotteryNo.toString(),
-                Name: Txt_Name.value,
-                Timestamp_Input: Math.floor(Date.now() / 1000).toString(),
-                Winning: ""
+                    autoID = fdatabase.ref().child(LotteryItemPath).push().key
+                    var updates = {}
+                    updates[LotteryItemPath + '/' + autoID] = {
+                        Blessing: Txt_Blessing.value,
+                        LotteryNO: lotteryNo.toString(),
+                        Name: Txt_Name.value,
+                        Timestamp_Input: Math.floor(Date.now() / 1000).toString(),
+                        Winning: ""
+                    }
+                    updates[LotteryNOCalPath] = lotteryNo + 1
+                    fdatabase.ref().update(updates)
+
+                    LB_Name.innerHTML = "感謝你/妳的祝福"
+                    LB_Blessing.innerHTML = "別忘了，有抽獎活動喔！<br>你/妳的抽獎號碼是：<br><font size=\"6\">" + lotteryNo + "</font>"
+                    Txt_Blessing.value = ""
+                    Txt_Name.value = ""
+                    Txt_Name.style = "display:none"
+                    Txt_Blessing.style = "display:none"
+                    BTN_send.innerHTML = "已送出"
+                    BTN_send.disabled = true
+                    fireApp.delete()
+                });
+            } else {
+                BTN_send.innerHTML = "已截止"
+                BTN_send.disabled = true
+                LB_Name.innerHTML = "傳送祝福活動已截止"
+                Txt_Name.style = "display:none"
+                LB_Blessing.style = "display:none"
+                Txt_Blessing.style = "display:none"
+                BTN_send.style = "display:none"
+                fireApp.delete()
             }
-            updates[LotteryNOCalPath] = lotteryNo + 1
-            fdatabase.ref().update(updates)
-
-            LB_Name.innerHTML = "感謝你/妳的祝福"
-            LB_Blessing.innerHTML = "別忘了，有抽獎活動喔！\n你/妳的抽獎號碼是：\n" + lotteryNo
-            Txt_Blessing.value = ""
-            Txt_Name.value = ""
-            Txt_Name.style = "display:none"
-            Txt_Blessing.style = "display:none"
-            button.innerHTML = "已送出"
-            button.disabled = "disabled"
         });
-
-
-        // if (button.value == "0") {
-        //     button.value = "1"
-
-        //     if (Txt_Name.value == "") {
-        //         Txt_Name.focus()
-        //         return
-        //     }
-        //     if (Txt_Blessing.value == "") {
-        //         Txt_Blessing.focus()
-        //         return
-        //     }
-
-        //     let ref = fdatabase.ref(LotteryNOCalPath)
-        //     ref.once('value', function(snapshot) {
-        //         let r = snapshot.val().toString()
-        //         var lotteryNo = new Number(r)
-
-        //         autoID = fdatabase.ref().child(LotteryRootPath).push().key
-        //         var updates = {}
-        //         updates[LotteryRootPath + '/' + autoID] = {
-        //             BlessingPath: Txt_Blessing.value,
-        //             LotteryNOPath: lotteryNo.toString(),
-        //             NamePath: Txt_Name.value,
-        //             Timestamp_InputPath: Math.floor(Date.now() / 1000).toString(),
-        //             WinningPath: ""
-        //         }
-        //         updates[LotteryNOCalPath] = lotteryNo + 1
-        //         fdatabase.ref().update(updates)
-
-        //         LB_Name.innerHTML = "感謝你/妳的祝福"
-        //         LB_Blessing.innerHTML = "別忘了，有抽獎活動喔！\n你的抽獎號碼是：" + lotteryNo
-        //         Txt_Name.style = "display:none"
-        //         Txt_Blessing.style = "display:none"
-        //         button.innerHTML = "已送出"
-        //         button.disabled = "disabled"
-        //     });
-        // } else {
-        //     button.value = "0"
-        //     LB_Name.innerHTML = "姓名"
-        //     LB_Blessing.innerHTML = "給我們的祝福"
-        //     Txt_Blessing.value = ""
-        //     Txt_Name.value = ""
-        //     Txt_Name.style = "display:inline-block"
-        //     Txt_Blessing.style = "display:inline-block"
-        //     button.innerHTML = "送出"
-        // }
     }
     </script>
 </body>
